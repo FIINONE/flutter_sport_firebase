@@ -1,63 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sport_firebase/model/workout.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sport App'),
-        centerTitle: true,
-        leading: const Icon(Icons.fitness_center),
-      ),
-      backgroundColor: Theme.of(context).primaryColor,
-      body: WorkoutList(),
-    );
-  }
-}
-
 class WorkoutList extends StatelessWidget {
-  WorkoutList({Key? key}) : super(key: key);
+  const WorkoutList({
+    Key? key,
+    required List<Workout> workouts,
+  })  : _workouts = workouts,
+        super(key: key);
 
-  final List<Workout> _workouts = <Workout>[
-    Workout(
-        title: 'Test1',
-        author: 'Azamat 1',
-        description: 'Test Workout 1',
-        level: 'Elementary'),
-    Workout(
-        title: 'Test3',
-        author: 'Azamat 2',
-        description: 'Test Workout 2',
-        level: 'Intermediate'),
-    Workout(
-        title: 'Test3',
-        author: 'Azamat 3',
-        description: 'Test Workout 3',
-        level: 'Advanced'),
-    Workout(
-        title: 'Test4',
-        author: 'Azamat 4',
-        description: 'Test Workout 4',
-        level: 'Intermediate'),
-    Workout(
-        title: 'Test5',
-        author: 'Azamat 5',
-        description: 'Test Workout 5',
-        level: 'Advanced'),
-  ];
-
-  // List<Workout>.generate(
-  //   100,
-  //   (int index) => Workout(
-  //     title: 'Name $index',
-  //     author: 'Azamat $index',
-  //     description: 'Desc $index',
-  //     level: '$index',
-  //   ),
-  // );
+  final List<Workout> _workouts;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +18,7 @@ class WorkoutList extends StatelessWidget {
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ColoredBox(
-            color: const Color.fromRGBO(50, 65, 85, 0.9),
+            color: const Color.fromRGBO(69, 89, 116, 1),
             child: ListTile(
               leading: Container(
                 padding: const EdgeInsets.only(right: 10),

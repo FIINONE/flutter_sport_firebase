@@ -1,5 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sport_firebase/model/user.dart';
+import 'package:flutter_sport_firebase/services/auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -19,6 +22,8 @@ class _AuthPageState extends State<AuthPage> {
   static const String _passwordHintText = 'Enter password';
 
   late final TapGestureRecognizer _tapGestureRecognizer;
+
+  final AuthServise _authServise = AuthServise();
 
   bool showLogin = true;
 
@@ -62,7 +67,8 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  ElevatedButton _buttonForm(BuildContext context, String text) {
+  ElevatedButton _buttonForm(
+      BuildContext context, String text, void Function() function) {
     return ElevatedButton(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Colors.white),
@@ -76,7 +82,7 @@ class _AuthPageState extends State<AuthPage> {
                     ? const Color.fromRGBO(50, 65, 85, 0.5)
                     : null),
       ),
-      onPressed: _buttonPress,
+      onPressed: function,
       child: Text(
         text,
         style: const TextStyle(
@@ -89,12 +95,42 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  void _buttonPress() {
+  Future<void> _loginButton() async {
     final String email = _emailController.text;
     final String password = _passwordController.text;
 
-    _emailController.clear();
-    _passwordController.clear();
+    if (email.isEmpty || password.isEmpty) {
+      return;
+    }
+
+    final UserModel? user =
+        await _authServise.signInEmailPasssword(email.trim(), password.trim());
+    if (user == null) {
+      Fluttertoast.showToast(
+          msg: 'Can`t SignIn you. Please check your email/password');
+    } else {
+      _emailController.clear();
+      _passwordController.clear();
+    }
+  }
+
+  Future<void> _registerButton() async {
+    final String email = _emailController.text;
+    final String password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      return;
+    }
+
+    final UserModel? user = await _authServise.registerEmailPasssword(
+        email.trim(), password.trim());
+    if (user == null) {
+      Fluttertoast.showToast(
+          msg: 'Can`t Register you. Please check your email/password');
+    } else {
+      _emailController.clear();
+      _passwordController.clear();
+    }
   }
 
   void _swapShowLoginReg() {
@@ -114,7 +150,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Column(
+      body: ListView(
         children: <Widget>[
           _logo(),
           const SizedBox(height: 20),
@@ -138,7 +174,7 @@ class _AuthPageState extends State<AuthPage> {
                 if (showLogin == true)
                   Column(
                     children: <Widget>[
-                      _buttonForm(context, 'Sign In'),
+                      _buttonForm(context, 'Sign In', _loginButton),
                       const SizedBox(height: 16),
                       RichText(
                         text: TextSpan(
@@ -160,7 +196,7 @@ class _AuthPageState extends State<AuthPage> {
                 else
                   Column(
                     children: <Widget>[
-                      _buttonForm(context, 'Sign Up'),
+                      _buttonForm(context, 'Sign Up', _registerButton),
                       const SizedBox(height: 16),
                       RichText(
                         text: TextSpan(
