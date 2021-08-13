@@ -5,6 +5,7 @@ import 'package:flutter_sport_firebase/model/user.dart';
 
 class AuthServise {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool get isSignIn => _auth.currentUser != null;
 
   Stream<UserModel?> get currentUser {
     return _auth.authStateChanges().map(

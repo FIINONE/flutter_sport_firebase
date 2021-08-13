@@ -1,9 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sport_firebase/components/active_workout.dart';
+import 'package:flutter_sport_firebase/ui/widgets/workout/active_workout.dart';
+import 'package:flutter_sport_firebase/domain/provider/home_provider.dart';
 import 'package:flutter_sport_firebase/domain/provider/workoutlist_provider.dart';
 import 'package:flutter_sport_firebase/ui/screens/workout.dart';
-import 'package:flutter_sport_firebase/services/auth.dart';
+import 'package:flutter_sport_firebase/data/services/auth.dart';
 import 'package:flutter_sport_firebase/ui/style/app_style.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.read<HomeModel>();
     final curvedNavigationBar = CurvedNavigationBar(
       backgroundColor: Theme.of(context).primaryColor,
       animationDuration: const Duration(milliseconds: 500),
@@ -56,6 +58,11 @@ class _HomePageState extends State<HomePage> {
               value: _workoutListModel,
               child: WorkoutListScreen(),
             ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add, color: Colors.black),
+        backgroundColor: Colors.blueGrey[600],
+        onPressed: () => model.showAddWorkout(context),
+      ),
       bottomNavigationBar: curvedNavigationBar,
     );
   }

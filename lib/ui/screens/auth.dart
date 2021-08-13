@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sport_firebase/model/user.dart';
-import 'package:flutter_sport_firebase/services/auth.dart';
+import 'package:flutter_sport_firebase/data/services/auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthPage extends StatefulWidget {

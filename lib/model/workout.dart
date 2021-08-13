@@ -12,23 +12,23 @@ class Workout {
   });
 }
 
-class WorkputSchedule {
+class WorkoutSchedule {
   List<WorkoutWeek> week;
 
-  WorkputSchedule({
+  WorkoutSchedule({
     required this.week,
   });
 
-  WorkputSchedule copy() {
+  WorkoutSchedule copy() {
     final List<WorkoutWeek> copiedWeek = week.map((w) => w.copy()).toList();
-    return WorkputSchedule(
+    return WorkoutSchedule(
       week: copiedWeek,
     );
   }
 }
 
 class WorkoutWeek {
-  String notes;
+  String? notes;
   List<WorkoutWeekDay> days;
 
   int get daysWithDrills =>
@@ -46,19 +46,22 @@ class WorkoutWeek {
       days: copiedDays,
     );
   }
+
+  @override
+  String toString() => 'WorkoutWeek(notes: $notes, days: $days)';
 }
 
 class WorkoutWeekDay {
-  String notes;
+  String? notes;
   List<WorkoutDrillsBlock> drillBlocks;
 
-  bool get isSet => drillBlocks != null && drillBlocks.length > 0;
-  
+  bool get isSet => drillBlocks.isNotEmpty;
+
   int get notRestDrillBlocksCount =>
       isSet ? drillBlocks.where((b) => b is! WorkoutRestDrillBlock).length : 0;
 
   WorkoutWeekDay({
-    required this.notes,
+    this.notes,
     required this.drillBlocks,
   });
 
@@ -105,16 +108,16 @@ abstract class WorkoutDrillsBlock {
 }
 
 class WorkoutDrill {
-  String title;
-  String weight;
-  int set;
-  int peps;
+  String? title;
+  String? weight;
+  int? set;
+  int? peps;
 
   WorkoutDrill({
-    required this.title,
-    required this.weight,
-    required this.set,
-    required this.peps,
+    this.title,
+    this.weight,
+    this.set,
+    this.peps,
   });
 
   WorkoutDrill copy() {
@@ -159,7 +162,7 @@ class WorkoutMultiDrillBlock extends WorkoutDrillsBlock {
 }
 
 class WorkoutAmrapDrillBlock extends WorkoutDrillsBlock {
-  final int minutes;
+  int? minutes;
   WorkoutAmrapDrillBlock({
     required this.minutes,
     required List<WorkoutDrill> drills,
@@ -175,9 +178,9 @@ class WorkoutAmrapDrillBlock extends WorkoutDrillsBlock {
 }
 
 class WorkoutForTimeDrillBlock extends WorkoutDrillsBlock {
-  final int timeCapMin;
-  final int rounds;
-  final int restBetweenRoundsMin;
+  int? timeCapMin;
+  int? rounds;
+  int? restBetweenRoundsMin;
   WorkoutForTimeDrillBlock({
     required List<WorkoutDrill> drills,
     required this.timeCapMin,
@@ -200,8 +203,8 @@ class WorkoutForTimeDrillBlock extends WorkoutDrillsBlock {
 }
 
 class WorkoutEmomDrillBlock extends WorkoutDrillsBlock {
-  final int timeCapMin;
-  final int intervalMin;
+  int? timeCapMin;
+  int? intervalMin;
   WorkoutEmomDrillBlock({
     required List<WorkoutDrill> drills,
     required this.timeCapMin,
@@ -222,7 +225,7 @@ class WorkoutEmomDrillBlock extends WorkoutDrillsBlock {
 }
 
 class WorkoutRestDrillBlock extends WorkoutDrillsBlock {
-  final int timeMin;
+  int? timeMin;
 
   WorkoutRestDrillBlock({
     required this.timeMin,
